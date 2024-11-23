@@ -448,10 +448,6 @@ def get_tsyganenko(
         key = f"W{i}"
         if key not in params:
             params[key] = 0.0
-
-    if "dst" in params:
-        params["SymH"] = params["dst"]
-        del params["dst"]
             
     gp_date = int(time.strftime("%Y%m%d"))
     gp_ut = int(time.strftime("%H")) + time.minute / 60

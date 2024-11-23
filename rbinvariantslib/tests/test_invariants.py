@@ -20,3 +20,5 @@ def test_lfm():
 
     expected = 6.627379641675664
     assert abs(result.LStar - expected) / expected < .05
+
+    
