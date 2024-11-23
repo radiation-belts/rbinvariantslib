@@ -1,6 +1,11 @@
 Radiation Belt Invariants Library
 ==================================
 
+.. image:: https://github.com/ddasilva/rbinvariantslib/actions/workflows/run_test.yml/badge.svg
+    :target: https://github.com/ddasilva/rbinvariantslib/actions
+    :alt: CI Status
+
+
 .. image:: https://img.shields.io/badge/DOI-10.1029//2023JA032397-blue
     :target: https://doi.org/10.1029/2023JA032397
     :alt: Paper DOI
