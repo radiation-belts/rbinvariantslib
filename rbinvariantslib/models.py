@@ -5,11 +5,9 @@ are instances of :py:class:`~MagneticFieldModel`.
 In this module, all grids returned are in units of Re and all magnetic
 fields are in units of Gauss.
 """
-from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 import os
-from typing import cast, Dict, List, Tuple, Union
 
 from astropy import constants, units
 from cdasws import CdasWs
@@ -159,7 +157,6 @@ class MagneticFieldModel:
 
         interp_result = pv.PolyData(interp.GetOutput())
         B = tuple(np.array(interp_result["B"])[0])
-        B = cast(Tuple[float, float, float], B)
 
         return B
 
@@ -416,11 +413,13 @@ def get_tsyganenko(
     """Helper function to get one of the tsyganenko fields on an LFM grid.
 
     Parameters
-    -----------
+    ----------
     model_name : {'T96', 'TS05'}
         Name of the magnetic field model to use.
     params : dictionary of string to array
-        Parameters to support Tsyganenko magnetic field mode
+        Input parameters to the Tsyganenko model. Keys are at minimum:
+        "Pdyn", "SymH", "By" and "Bz". For the TS05 model, optional keys
+        are "W1" through "W6".
     time : datetime, no timezone
         Time to support the Tsyganenko magnetic field model
     x_re_sm_grid : array of shape (m, n, p)
@@ -515,7 +514,7 @@ def get_tsyganenko_on_lfm_grid(
     """Helper function to get one of the tsyganenko fields on an LFM grid.
 
     Parameters
-    -----------
+    ----------
     model_name : {'T96', 'TS05'}
         Name of the magnetic field model to use.
     params : dictionary of string to array
@@ -564,8 +563,9 @@ def get_tsyganenko_params(times):
 
     Returns
     -------
-    params : dict, str to array
-        dictionary mapping variable to array of parameters
+    params : dist or list of dicts
+        If list of times is passed, returns list of dicts. otherwise, just 
+        returns dict. Each dicts mapping variable to float paramters.
     """
     # Massage time argument into list if it is just a single datetime
     times_list = []
@@ -597,21 +597,43 @@ def get_tsyganenko_params(times):
     cdas_data = {v: np.array(data_result[v]) for v in var_names + ['Epoch']}
 
     # Interpolate Tsyganenko parameters from CDAS data
-    params_dict = {}
+    fill_value_max = 99.0
 
-    for our_col, cdas_col in col_map.items():
-        mask = (cdas_data[cdas_col] < 99.0)     # skip fill values
-    
-        if len(times_list) == 1:
+    if len(times_list) == 1:    
+        params_dict = {}
+        
+        for our_col, cdas_col in col_map.items():
+            mask = (cdas_data[cdas_col] < fill_value_max)  # skip fill values
             (params_dict[our_col],) = np.interp(
-                date2num(times_list), date2num(cdas_data['Epoch'])[mask], cdas_data[cdas_col][mask]
+                date2num(times_list),
+                date2num(cdas_data['Epoch'])[mask],
+                cdas_data[cdas_col][mask]
             )
-        else:
-            params_dict[our_col] = np.interp(
-                date2num(times_list), date2num(cdas_data['Epoch'])[mask], cdas_data[cdas_col][mask]
+
+        return_value = params_dict
+    else:
+        # Interpolate into dict of arrays
+        dict_of_arrays = {}
+        for our_col, cdas_col in col_map.items():
+            mask = (cdas_data[cdas_col] < fill_value_max)  # skip fill values            
+            dict_of_arrays[our_col] = np.interp(
+                date2num(times_list),
+                date2num(cdas_data['Epoch'])[mask],
+                cdas_data[cdas_col][mask]
             )
+
+        # Convert to list of dicts
+        return_value = []
+
+        for i in range(len(times_list)):
+            cur_dict = {}
+
+            for our_col in col_map.keys():
+                cur_dict[our_col] = float(dict_of_arrays[our_col][i])
+
+            return_value.append(cur_dict)
     
-    return params_dict
+    return return_value
 
 
 def get_swmf_cdf_model(path, xaxis=None, yaxis=None, zaxis=None):
@@ -748,7 +770,7 @@ def get_model(model_type, path, **kwargs):
        Path to file on disk
 
     Returns
-    --------
+    -------
     model : :py:class:`~MagneticFieldModel`
        Grid and Magnetic field values on that grid.
     """
