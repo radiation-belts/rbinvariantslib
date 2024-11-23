@@ -416,14 +416,9 @@ def _calc_cell_centers(A):
 
 
 def get_tsyganenko(
-        model_name: str,
-        params: Dict[str, NDArray[np.float64]],
-        time: datetime,
-        x_re_sm_grid: NDArray[np.float64],
-        y_re_sm_grid: NDArray[np.float64],
-        z_re_sm_grid: NDArray[np.float64],
-        inner_boundary: float,
-        external_field_only: bool = False,
+        model_name, params, time,
+        x_re_sm_grid, y_re_sm_grid, z_re_sm_grid,
+        inner_boundary, external_field_only=False,
 ) -> MagneticFieldModel:
     """Helper function to get one of the tsyganenko fields on an LFM grid.
 
@@ -435,11 +430,11 @@ def get_tsyganenko(
         Parameters to support Tsyganenko magnetic field mode
     time : datetime, no timezone
         Time to support the Tsyganenko magnetic field model
-    x_re_sm_grid : array of shame (m, n, p)
+    x_re_sm_grid : array of shape (m, n, p)
         x coordinates
-    y_re_sm_grid : array of shame (m, n, p)
+    y_re_sm_grid : array of shape (m, n, p)
         y coordinates
-    z_re_sm_grid : array of shame (m, n, p)
+    z_re_sm_grid : array of shape (m, n, p)
         z coordinates
     inner_boundary : float
         Inner boundary of model
@@ -521,11 +516,8 @@ def get_tsyganenko(
 
 
 def get_tsyganenko_on_lfm_grid(
-    model_name: str,
-    params: Dict[str, NDArray[np.float64]],
-    time: datetime,
-    lfm_hdf4_path: str,
-    external_field_only: bool = False,
+    model_name, params, time, lfm_hdf4_path,
+    external_field_only=False,
 ) -> MagneticFieldModel:
     """Helper function to get one of the tsyganenko fields on an LFM grid.
 

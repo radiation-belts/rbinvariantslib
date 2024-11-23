@@ -1,6 +1,10 @@
-da Silva Invariants
-===================
-   
+Radiation Belt Invariants Library
+==================================
+
+.. image:: https://img.shields.io/badge/DOI-10.1029//2023JA032397-blue
+    :target: https://doi.org/10.1029/2023JA032397
+    :alt: Paper DOI
+
 .. note:: 
     
     This package provides tools for radiation belt physicists to calculate the adiabiatic invariants K and L* from gridded models of Earth's magnetic field. This package supports the `T96 <https://geo.phys.spbu.ru/~tsyganenko/empirical-models/magnetic_field/t96/>`_ and `TS05 <https://geo.phys.spbu.ru/~tsyganenko/empirical-models/magnetic_field/ts05/>`_ empirical Tsyganenko magnetic field models, `SWMF <https://clasp.engin.umich.edu/research/theory-computational-methods/space-weather-modeling-framework/>`_ and `LFM <https://doi.org/10.1016/j.jastp.2004.03.020>`_ MHD simulation output, and data on an arbitrary structured grid. 
@@ -14,7 +18,7 @@ da Silva Invariants
 
   methodology.rst   
   citing.rst          
-  dasilva_invariants.rst
+  rbinvariantslib.rst
 
 Installing
 -------------
@@ -22,18 +26,18 @@ This module can be installed using pip and PyPI.
 
 .. code::
 
-   $ pip install dasilva-invariants
+   $ pip install rbinvariantslib
 
 Brief Tour
 -------------
 
 Calculating L* from TS05
-+++++++++++++++++++++++
++++++++++++++++++++++++++
 Below is code which calculates L* using the magnetic fields obtain from TS05 and placed on a regular grid, for a particle observated with a pitch angle of 60° observed at (-6.6, 0, 0) R :sub:`E` (SM coordinate system).
 
 .. code-block:: python
 
-    from dasilva_invariants import models, invariants
+    from rbinvariantslib import models, invariants
     from datetime import datetime
     import numpy as np
 
@@ -64,12 +68,12 @@ Below is code which calculates L* using the magnetic fields obtain from TS05 and
 
 
 Calculating K from SWMF 
-+++++++++++++++++++++++
++++++++++++++++++++++++++
 This code calculates the second adiabatic invariant K for a particle bouncing through (-6.6, 0, 0) R :sub:`E` (SM coordinate system) and mirroring at at 50° magnetic latitude, using magnetic fields from SWMF simulation output in CDF format (as obtained from the CCMC).
 
 .. code-block:: python
 
-    from dasilva_invariants import models, invariants
+    from rbinvariantslib import models, invariants
 
     model = models.get_model(
         "SWMF_CDF",

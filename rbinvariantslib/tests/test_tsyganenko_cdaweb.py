@@ -3,7 +3,7 @@ from datetime import datetime
 import numpy as np
 from numpy.testing import assert_allclose
 
-from dasilva_invariants import models
+from rbinvariantslib import models
 
 
 def test_single_time():

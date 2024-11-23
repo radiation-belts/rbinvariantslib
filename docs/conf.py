@@ -56,8 +56,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'da Silva Invariants'
-copyright = u'2022, Daniel da Silva'
+project = u'Radiation Belts Invariants Library'
+copyright = u'2024, Daniel da Silva'
 author = u'Daniel da Silva'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -129,7 +129,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'dasilvainvariantsdoc'
+htmlhelp_basename = 'rbinvariantslibdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------

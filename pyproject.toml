@@ -5,11 +5,12 @@ requires = ["setuptools>=45",
 build-backend = 'setuptools.build_meta'
 
 [project]
-name = "dasilva-invariants"
-description = 'Calculation of Radiation Belt Adiabatic Invariants from TS05, T96, LFM, and SWMF magnetic field models'
+name = "rbinvariantslib"
+description = 'Radiation Belt Adiabatic Invariants Calculation from TS05, T96, LFM, and SWMF magnetic field models'
 version = "0.1.0"
-authors = [{name = "Daniel da Silva", email = "mail@danieldasilva.org"}]
-license = {file = "LICENSE.rst"}
+authors = [{name = "Daniel da Silva", email = "daniel.e.dasilva@nasa.gov"}]
+license = {file = "LICENSE"}
+readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.9"
 classifiers=[
     "Development Status :: 4 - Beta",
@@ -53,4 +54,4 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://dasilva-invariants.readthedocs.io/en/latest/"
+Homepage = "https://rbinvariantslib.readthedocs.io/en/latest/"

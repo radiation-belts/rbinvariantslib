@@ -1,2 +1,2 @@
 
-.. automodapi:: dasilva_invariants.invariants
+.. automodapi:: rbinvariantslib.invariants
