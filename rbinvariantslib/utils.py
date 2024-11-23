@@ -3,7 +3,6 @@
 """
 from typing import Tuple
 
-from ai import cs
 from astropy import units
 import numpy as np
 import numpy.typing as npt
