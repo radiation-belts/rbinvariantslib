@@ -19,7 +19,7 @@ build:
     - cmake
     - gfortran
     - graphviz
-
+    - libhdf4-dev
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
