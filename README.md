@@ -47,4 +47,4 @@ https://rbinvariantslib.readthedocs.io/
 
 ## License
 
-`rbinvariantslib` is released under the BSD-License (3-clause version). See the LICENSE.rst file for details.
+`rbinvariantslib` is released under the BSD-License (3-clause version). See the LICENSE file for details.
