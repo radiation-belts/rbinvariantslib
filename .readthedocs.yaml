@@ -19,8 +19,6 @@ build:
     - cmake
     - gfortran
     - graphviz
-  tools:
-    python: "mambaforge-22.9"
 
 
 # Build documentation in the "docs/" directory with Sphinx
