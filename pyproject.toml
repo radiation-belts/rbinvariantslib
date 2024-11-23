@@ -39,8 +39,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "flake8",
-    "mypy",    
+    "coverage",
     "pytest",
     "requests",
 ]
