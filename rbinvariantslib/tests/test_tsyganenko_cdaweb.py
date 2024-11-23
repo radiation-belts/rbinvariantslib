@@ -1,8 +1,5 @@
 from datetime import datetime
 
-import numpy as np
-from numpy.testing import assert_allclose
-
 from rbinvariantslib import models
 
 

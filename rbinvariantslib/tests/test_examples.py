@@ -1,8 +1,8 @@
 from rbinvariantslib import models, invariants
 from datetime import datetime
 import numpy as np
-import os
-import requests
+
+import testing_utils
 
 
 def test_tsyganenko():
@@ -32,14 +32,7 @@ def test_tsyganenko():
 
 
 def test_swmf():
-    # Download file if not in this directory
-    fname = "./3d__var_1_e20151221-001700-014.out.cdf"
-    url = 'https://danieldasilva.org/ci_files/rbinvariantslib/3d__var_1_e20151221-001700-014.out.cdf'
-    
-    if not os.path.exists(fname):
-        resp = requests.get(url)
-        with open(fname, 'wb') as fh:
-            fh.write(resp.content)
+    fname = testing_utils.get_swmf_file()
     
     model = models.get_model(
         "SWMF_CDF",
