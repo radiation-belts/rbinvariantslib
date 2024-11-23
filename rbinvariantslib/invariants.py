@@ -2,7 +2,6 @@
 from dataclasses import dataclass
 from typing import Any, List, Optional, Tuple
 
-from ai import cs
 import numpy as np
 from numpy.typing import NDArray
 from scipy import interpolate
@@ -233,7 +232,7 @@ def calculate_K(
 
     # Get the trace latitudes and Bm if not specified
     # ------------------------------------------------------------------------
-    _, trace_latitude, _ = cs.cart2sp(
+    _, trace_latitude, _ = utils.cart2sp(
         x=trace.points[:, 0], y=trace.points[:, 1], z=trace.points[:, 2]
     )
     trace_sorter = np.argsort(trace_latitude)

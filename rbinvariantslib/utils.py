@@ -34,7 +34,7 @@ def sp2cart_point(r: float, phi: float, theta: float) -> Tuple[float, float, flo
     Returns
       x, y, z: Cartesian coordinates
     """
-    point = cs.sp2cart(r=r, phi=phi, theta=theta)  # returns tuple of 0d arrays
+    point = sp2cart(r=r, phi=phi, theta=theta)  # returns tuple of 0d arrays
     point = tuple(np.array(point).tolist())
 
     return point
@@ -50,10 +50,70 @@ def cart2sp_point(x: float, y: float, z: float) -> Tuple[float, float, float]:
       phi: longitude
       theta: latitude
     """
-    point = cs.cart2sp(x=x, y=y, z=z)  # returns tuple of 0d arrays
+    point = cart2sp(x=x, y=y, z=z)  # returns tuple of 0d arrays
     point = tuple(np.array(point).tolist())
 
     return point
+
+
+# Function forked from https://bitbucket.org/isavnin/ai.cs/src/master/src/ai/cs.py
+# because broken in Python 3.12
+def cart2sp(x, y, z):
+    """Converts data from cartesian coordinates into spherical.
+
+    Args:
+        x (scalar or array_like): X-component of data.
+        y (scalar or array_like): Y-component of data.
+        z (scalar or array_like): Z-component of data.
+
+    Returns:
+        Tuple (r, theta, phi) of data in spherical coordinates.
+    """
+    x = np.asarray(x)
+    y = np.asarray(y)
+    z = np.asarray(z)
+    scalar_input = False
+    if x.ndim == 0 and y.ndim == 0 and z.ndim == 0:
+        x = x[None]
+        y = y[None]
+        z = z[None]
+        scalar_input = True
+    r = np.sqrt(x**2+y**2+z**2)
+    theta = np.arcsin(z/r)
+    phi = np.arctan2(y, x)
+    if scalar_input:
+        return (r.squeeze(), theta.squeeze(), phi.squeeze())
+    return (r, theta, phi)
+
+
+# Function forked from https://bitbucket.org/isavnin/ai.cs/src/master/src/ai/cs.py
+# because broken in Python 3.12
+def sp2cart(r, theta, phi):
+    """Converts data in spherical coordinates into cartesian.
+
+    Args:
+        r (scalar or array_like): R-component of data.
+        theta (scalar or array_like): Theta-component of data.
+        phi (scalar or array_like): Phi-component of data.
+
+    Returns:
+        Tuple (x, y, z) of data in cartesian coordinates.
+    """
+    r = np.asarray(r)
+    theta = np.asarray(theta)
+    phi = np.asarray(phi)
+    scalar_input = False
+    if r.ndim == 0 and theta.ndim == 0 and phi.ndim == 0:
+        r = r[None]
+        theta = theta[None]
+        phi = phi[None]
+        scalar_input = True
+    x = r*np.cos(theta)*np.cos(phi)
+    y = r*np.cos(theta)*np.sin(phi)
+    z = r*np.sin(theta)
+    if scalar_input:
+        return (x.squeeze(), y.squeeze(), z.squeeze())
+    return (x, y, z)
 
 
 def lfm_get_eq_slice(data):

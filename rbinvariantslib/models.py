@@ -11,8 +11,6 @@ from datetime import datetime, timedelta
 import os
 from typing import cast, Dict, List, Tuple, Union
 
-
-from ai import cs
 from astropy import constants, units
 from cdasws import CdasWs
 import h5py
@@ -101,11 +99,6 @@ class MagneticFieldModel:
         B[:, 2] = Bz.flatten(order="F")
         self._mesh = pv.StructuredGrid(x, y, z)
         self._mesh.point_data["B"] = B
-
-        #R_grid, theta_grid, phi_grid = cs.cart2sp(x, y, z)
-        #self._mesh.point_data["R_grid"] = R_grid.flatten(order="F")
-        #self._mesh.point_data["Theta_grid"] = theta_grid.flatten(order="F")
-        #self._mesh.point_data["Phi_grid"] = phi_grid.flatten(order="F")
 
     def trace_field_line(
         self, starting_point, step_size
