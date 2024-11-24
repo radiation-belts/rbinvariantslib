@@ -6,10 +6,13 @@ Radiation Belt Invariants Library
     :alt: CI Status
 
 
-.. image:: https://img.shields.io/badge/DOI-10.1029//2023JA032397-blue
+.. image:: https://img.shields.io/badge/DOI-10.1029/2023JA032397-blue
     :target: https://doi.org/10.1029/2023JA032397
     :alt: Paper DOI
 
+.. image:: https://img.shields.io/badge/License-BSD%203-green
+   :alt: BSD-3	   
+	  
 .. note:: 
     
     This package provides tools for radiation belt physicists to calculate the adiabiatic invariants K and L* from gridded models of Earth's magnetic field. This package supports the `T96 <https://geo.phys.spbu.ru/~tsyganenko/empirical-models/magnetic_field/t96/>`_ and `TS05 <https://geo.phys.spbu.ru/~tsyganenko/empirical-models/magnetic_field/ts05/>`_ empirical Tsyganenko magnetic field models, `SWMF <https://clasp.engin.umich.edu/research/theory-computational-methods/space-weather-modeling-framework/>`_ and `LFM <https://doi.org/10.1016/j.jastp.2004.03.020>`_ MHD simulation output, and data on an arbitrary structured grid. 
