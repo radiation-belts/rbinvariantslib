@@ -21,6 +21,7 @@ Radiation Belt Invariants Library
 .. toctree::
   :maxdepth: 2
 
+  whatsnew/index
   methodology.rst   
   citing.rst          
   rbinvariantslib.rst
