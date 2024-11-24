@@ -53,3 +53,7 @@ docs = [
 
 [project.urls]
 Homepage = "https://rbinvariantslib.readthedocs.io/en/latest/"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "node-and-date"
