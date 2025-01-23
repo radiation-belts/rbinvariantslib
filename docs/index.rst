@@ -54,8 +54,8 @@ Below is code which calculates L* using the magnetic fields obtain from TS05 and
     time = datetime(2015, 10, 2)
     params = models.get_tsyganenko_params(time)
     
-    # Evaluate TS05 model on regular grid 
-    axis = np.arange(-10, 10, 0.50)
+    # Evaluate TS05 model on regular grid. This takes 10-15 sec.
+    axis = np.arange(-10, 10, 0.25)
     x, y, z = np.meshgrid(axis, axis, axis)
     model = models.get_tsyganenko(
         "TS05", params, time,
@@ -65,7 +65,7 @@ Below is code which calculates L* using the magnetic fields obtain from TS05 and
         inner_boundary=1
     )
 
-    # Calculate L* 
+    # Calculate L*. This takes 20-25 sec.
     result = invariants.calculate_LStar(
         model,
         starting_point=(-6.6, 0, 0),

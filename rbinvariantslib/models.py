@@ -468,19 +468,34 @@ def get_tsyganenko(
     Bx[~mask] = np.nan
     By[~mask] = np.nan
     Bz[~mask] = np.nan
-    
-    Bx[mask], By[mask], Bz[mask] = gp.ModelField(
-        x_re_sm[mask],
-        y_re_sm[mask],
-        z_re_sm[mask],
-        Date=gp_date,
-        ut=gp_ut,
-        Model=gp_model,
-        CoordIn='SM',
-        CoordOut='SM',
-        **params
-    )
-        
+
+    Bx_masked = np.zeros(mask.sum())
+    By_masked = Bx_masked.copy()
+    Bz_masked = Bx_masked.copy()
+    x_masked = x_re_sm[mask]
+    y_masked = y_re_sm[mask]
+    z_masked = z_re_sm[mask]
+    batch_size = 10_000
+
+    for step in range(0, mask.sum(), batch_size):
+        i = step
+        j = step + batch_size
+        Bx_masked[i:j], By_masked[i:j], Bz_masked[i:j] = gp.ModelField(
+            x_masked[i:j],
+            y_masked[i:j],
+            z_masked[i:j],
+            Date=gp_date,
+            ut=gp_ut,
+            Model=gp_model,
+            CoordIn='SM',
+            CoordOut='SM',
+            **params
+        )
+
+    Bx[mask] = Bx_masked
+    By[mask] = By_masked
+    Bz[mask] = Bz_masked    
+                
     # Convert from nT to Gauss
     Bx = nanoTesla2Gauss(Bx)
     By = nanoTesla2Gauss(By)

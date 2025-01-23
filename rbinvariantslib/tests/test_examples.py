@@ -11,7 +11,7 @@ def test_tsyganenko():
     params = models.get_tsyganenko_params(time)
 
     # Evaluate TS05 model on regular grid
-    axis = np.arange(-10, 10, 0.5)
+    axis = np.arange(-10, 10, 0.25)
     x, y, z = np.meshgrid(axis, axis, axis)
     model = models.get_tsyganenko(
         "TS05", params, time,
@@ -20,15 +20,15 @@ def test_tsyganenko():
         z_re_sm_grid=z,
         inner_boundary=1.5
     )
-
+    
     # Calculate L*
     result = invariants.calculate_LStar(
         model,
         starting_point=(-6.6, 0, 0),
         starting_pitch_angle=60
     )
-    
-    assert abs(result.LStar - 5.79) < .1
+
+    assert abs(result.LStar - 5.8258) < .1
 
 
 def test_swmf():
