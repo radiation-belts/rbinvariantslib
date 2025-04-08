@@ -703,7 +703,7 @@ def get_swmf_cdf_model(path, xaxis=None, yaxis=None, zaxis=None):
     point_cloud['Bz'] = bz + bz_dipole
 
     points_search = pv.PolyData(np.transpose([X.flatten(), Y.flatten(), Z.flatten()]))
-    interp = vtk.vtkPointInterpolator()  # linear interpolation
+    interp = vtk.vtkPointInterpolator()  
     interp.SetInputData(points_search)
     interp.SetSourceData(point_cloud)
     interp.GetKernel().SetRadius(0.1)
