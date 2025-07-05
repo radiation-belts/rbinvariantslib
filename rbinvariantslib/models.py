@@ -17,7 +17,7 @@ import numpy as np
 from numpy.typing import NDArray
 from pyhdf.SD import SD, SDC
 import pyvista as pv
-from spacepy import pycdf
+from spacepy import pybats
 import vtk
 
 # Don't print warnings from pygeopack about data not found
@@ -36,7 +36,7 @@ __all__ = [
     "get_tsyganenko",
     "get_tsyganenko_on_lfm_grid",
     "get_tsyganenko_params",
-    "get_swmf_cdf_model",
+    "get_swmf_out_model",
     "get_generic_hdf5_model",
     "get_model",
 ]
@@ -647,21 +647,23 @@ def get_tsyganenko_params(times):
     return return_value
 
 
-def get_swmf_cdf_model(path, xaxis=None, yaxis=None, zaxis=None):
-    """Get a :py:class:`~MagneticFieldModel` from SWMF CDF output.
+def get_swmf_out_model(path, xaxis=None, yaxis=None, zaxis=None, interp_radius=1):
+    """Get a :py:class:`~MagneticFieldModel` from SWMF .out output.
     This regrids it to a rectilinear grid each time this function
     is called.
 
     Parameters
     -----------
     path : str
-        Path to SWMF file in CDF format
+        Path to SWMF file in .out format
     xaxis: array
         x-axis of rectilinear grid (default -10:.15:10)
     yaxis: array
         y-axis of rectilinear grid (default -10:.15:10)
     zaxis: array
         z-axis of rectilinear grid (default -5:.15:5)
+    interp_radius : float
+        Radius to use for interpolation. Default is 1 Re.
 
     Returns
     --------
@@ -676,37 +678,29 @@ def get_swmf_cdf_model(path, xaxis=None, yaxis=None, zaxis=None):
     if zaxis is None:
         zaxis = np.arange(-5, 5, .15)
     
-    # Load data from CDF
-    cdf = pycdf.CDF(path)
+    # Load data from .out file
+    out_file = pybats.IdlFile(path)
     
-    x = cdf['x'][:].flatten()
-    y = cdf['y'][:].flatten()
-    z = cdf['z'][:].flatten()
-    bx = nanoTesla2Gauss(cdf['bx'][:].flatten())
-    by = nanoTesla2Gauss(cdf['by'][:].flatten())
-    bz = nanoTesla2Gauss(cdf['bz'][:].flatten())
-
-    cdf.close()
-    
-    # Calculate Dipole (data in file is external field)
-    r = np.sqrt(x**2 + y**2 + z**2)
-    bx_dipole = 3 * x * z * EARTH_DIPOLE_B0 / r**5
-    by_dipole = 3 * y * z * EARTH_DIPOLE_B0 / r**5
-    bz_dipole = (3 * z**2 - r**2) * EARTH_DIPOLE_B0 / r**5    
+    x = out_file['x']
+    y = out_file['y']
+    z = out_file['z']
+    bx = nanoTesla2Gauss(out_file['bx'])
+    by = nanoTesla2Gauss(out_file['by'])
+    bz = nanoTesla2Gauss(out_file['bz'])
     
     # Interpolate onto rectilinear grid
     X, Y, Z = np.meshgrid(xaxis, yaxis, zaxis)
 
     point_cloud = pv.PolyData(np.transpose([x, y, z]))
-    point_cloud['Bx'] = bx + bx_dipole
-    point_cloud['By'] = by + by_dipole
-    point_cloud['Bz'] = bz + bz_dipole
+    point_cloud['Bx'] = bx 
+    point_cloud['By'] = by 
+    point_cloud['Bz'] = bz 
 
     points_search = pv.PolyData(np.transpose([X.flatten(), Y.flatten(), Z.flatten()]))
     interp = vtk.vtkPointInterpolator()  
     interp.SetInputData(points_search)
     interp.SetSourceData(point_cloud)
-    interp.GetKernel().SetRadius(0.1)
+    interp.GetKernel().SetRadius(interp_radius)
     interp.Update()
 
     interp_result = pv.PolyData(interp.GetOutput())
@@ -775,7 +769,7 @@ def get_model(model_type, path, **kwargs):
 
     Parameters
     ----------
-    model_type : {"lfm_hdf4", "swmf_cdf", "generic_hdf5"}
+    model_type : {"lfm_hdf4", "swmf_out", "generic_hdf5"}
        Type of the model (case insensitive)
     path : str
        Path to file on disk
@@ -789,8 +783,8 @@ def get_model(model_type, path, **kwargs):
     
     if model_type == "lfm_hdf4":
         return get_lfm_hdf4_model(path)
-    elif model_type == "swmf_cdf":
-        return get_swmf_cdf_model(path, **kwargs)
+    elif model_type == "swmf_out":
+        return get_swmf_out_model(path, **kwargs)
     elif model_type == "generic_hdf5":
         return get_generic_hdf5_model(path, **kwargs)
     else:

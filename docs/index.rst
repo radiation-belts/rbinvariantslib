@@ -78,15 +78,15 @@ Below is code which calculates L* using the magnetic fields obtain from TS05 and
 
 Calculating K from SWMF 
 +++++++++++++++++++++++++
-This code calculates the second adiabatic invariant K for a particle bouncing through (-6.6, 0, 0) R :sub:`E` (SM coordinate system) and mirroring at at 50° magnetic latitude, using magnetic fields from SWMF simulation output in CDF format (as obtained from the CCMC).
+This code calculates the second adiabatic invariant K for a particle bouncing through (-6.6, 0, 0) R :sub:`E` (SM coordinate system) and mirroring at at 50° magnetic latitude, using magnetic fields from SWMF simulation output in .out format.
 
 .. code-block:: python
 
     from rbinvariantslib import models, invariants
 
     model = models.get_model(
-        "SWMF_CDF",
-        "3d__var_1_e20151221-001700-014.out.cdf"
+        "SWMF_OUT",
+        "3d__var_1_e19971010-170000-000.out"
     )
 
     result = invariants.calculate_K(

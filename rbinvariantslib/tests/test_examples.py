@@ -35,7 +35,7 @@ def test_swmf():
     fname = testing_utils.get_swmf_file()
     
     model = models.get_model(
-        "SWMF_CDF",
+        "SWMF_OUT",
         fname
     )
 
@@ -44,5 +44,5 @@ def test_swmf():
         starting_point=(-6.6, 0, 0),
         mirror_latitude=50
     )
-    
-    assert abs(result.K - 1.7) < .1
+
+    assert abs(result.K - 1.6) < .1

@@ -14,7 +14,7 @@ def get_file(fname):
     return fname
 
 def get_swmf_file():
-    return get_file("./3d__var_1_e20151221-001700-014.out.cdf")
+    return get_file("./3d__var_1_e19971010-170000-000.out")
 
 
 def get_lfm_file():
